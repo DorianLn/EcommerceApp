@@ -107,6 +107,8 @@ fun ProductListScreen(
                             .padding(vertical = 8.dp)
                             .clickable {
                                 val intent = Intent(context, ProductDetailActivity::class.java).apply {
+                                    putExtra("product_id", product.id)
+
                                     putExtra("product_name", product.title)
                                     putExtra("product_price", product.price)
                                     putExtra("product_description", product.description)

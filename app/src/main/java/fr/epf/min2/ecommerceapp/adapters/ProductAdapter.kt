@@ -2,6 +2,7 @@ package fr.epf.min2.ecommerceapp.adapters
 
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -39,7 +40,10 @@ class ProductAdapter(
         Glide.with(context).load(product.image).into(holder.imageView)
 
         holder.itemView.setOnClickListener {
+            Log.d("ProductAdapter", "Clicked product: id=${product.id}, name=${product.title}")
+
             val intent = Intent(holder.itemView.context, ProductDetailActivity::class.java)
+            intent.putExtra("product_id", product.id)
             intent.putExtra("product_name", product.title)
             intent.putExtra("product_price", product.price)
             intent.putExtra("product_description", product.description)

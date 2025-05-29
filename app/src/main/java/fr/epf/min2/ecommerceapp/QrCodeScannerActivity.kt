@@ -2,6 +2,7 @@ package fr.epf.min2.ecommerceapp
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.zxing.integration.android.IntentIntegrator
@@ -27,10 +28,15 @@ class QrCodeScannerActivity : AppCompatActivity() {
         if (result != null) {
             if (result.contents != null) {
                 val productId = result.contents
-                val intent = Intent(this, ProductDetailActivity::class.java).apply {
-                    putExtra("product_id", productId)
+                if (productId != null) {
+                    Log.d("QrCodeScannerActivity", "Scanned productId = $productId")
+                    val intent = Intent(this, ProductDetailActivity::class.java).apply {
+                        putExtra("qr_product_id", productId)
+                    }
+                    startActivity(intent)
+                } else {
+                    Toast.makeText(this, "ID produit invalide", Toast.LENGTH_SHORT).show()
                 }
-                startActivity(intent)
             } else {
                 Toast.makeText(this, "Scan annulé", Toast.LENGTH_SHORT).show()
             }
@@ -39,4 +45,5 @@ class QrCodeScannerActivity : AppCompatActivity() {
         }
         finish()
     }
+
 }

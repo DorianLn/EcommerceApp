@@ -1,6 +1,7 @@
 package fr.epf.min2.ecommerceapp
 
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.bumptech.glide.Glide
@@ -28,35 +29,34 @@ class ProductDetailActivity : AppCompatActivity() {
             finish()
         }
 
-        val productId = intent.getStringExtra("product_id")
-
-        if (productId != null) {
-            // Cas QR code : charger depuis l’API
-            val id = productId.toIntOrNull()
+        val qrProductId = intent.getStringExtra("qr_product_id")
+        if (qrProductId != null) {
+            val id = qrProductId.toIntOrNull()
             if (id != null) {
                 fetchProductById(id)
-            } else {
-                Toast.makeText(this, "ID produit invalide", Toast.LENGTH_SHORT).show()
-                finish()
+                return
             }
-        } else {
-            // Cas classique : infos passées via Intent
-            val productName = intent.getStringExtra("product_name")
-            val productPrice = intent.getDoubleExtra("product_price", 0.0)
-            val productDescription = intent.getStringExtra("product_description")
-            val productImage = intent.getStringExtra("product_image")
-
-            val product = Product(
-                id = 0,
-                title = productName ?: "",
-                price = productPrice,
-                description = productDescription ?: "",
-                image = productImage ?: "",
-                category = ""
-            )
-
-            displayProduct(product)
         }
+
+// Cas classique : ouvert depuis ProductAdapter
+        val productId = intent.getIntExtra("product_id", -1)
+        val productName = intent.getStringExtra("product_name")
+        val productPrice = intent.getDoubleExtra("product_price", 0.0)
+        val productDescription = intent.getStringExtra("product_description")
+        val productImage = intent.getStringExtra("product_image")
+
+        val product = Product(
+            id = productId,
+            title = productName ?: "",
+            price = productPrice,
+            description = productDescription ?: "",
+            image = productImage ?: "",
+            category = ""
+        )
+
+        displayProduct(product)
+
+
     }
 
     private fun fetchProductById(id: Int) {
@@ -65,7 +65,11 @@ class ProductDetailActivity : AppCompatActivity() {
                 val product = RetrofitInstance.api.getProductById(id)
                 displayProduct(product)
             } catch (e: Exception) {
-                Toast.makeText(this@ProductDetailActivity, "Erreur lors du chargement du produit", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    this@ProductDetailActivity,
+                    "Erreur lors du chargement du produit",
+                    Toast.LENGTH_SHORT
+                ).show()
                 finish()
             }
         }
@@ -82,6 +86,7 @@ class ProductDetailActivity : AppCompatActivity() {
 
         val addToCartButton = findViewById<Button>(R.id.addToCartButton)
         addToCartButton.setOnClickListener {
+
             CartManager.addToCart(product)
             Toast.makeText(this, "Produit ajouté au panier", Toast.LENGTH_SHORT).show()
         }
