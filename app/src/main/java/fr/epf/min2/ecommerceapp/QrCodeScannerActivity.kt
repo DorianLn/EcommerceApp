@@ -13,11 +13,11 @@ class QrCodeScannerActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Lance directement le scanner dès l'ouverture
+
         val integrator = IntentIntegrator(this)
         integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE)
         integrator.setPrompt("Scannez un QR code")
-        integrator.setCameraId(0) // 0 = caméra arrière
+        integrator.setCameraId(0) // apparamment, pour utiliser la caméra arrière
         integrator.setBeepEnabled(true)
         integrator.setBarcodeImageEnabled(true)
         integrator.initiateScan()

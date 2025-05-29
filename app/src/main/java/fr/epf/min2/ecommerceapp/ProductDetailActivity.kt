@@ -38,7 +38,6 @@ class ProductDetailActivity : AppCompatActivity() {
             }
         }
 
-// Cas classique : ouvert depuis ProductAdapter
         val productId = intent.getIntExtra("product_id", -1)
         val productName = intent.getStringExtra("product_name")
         val productPrice = intent.getDoubleExtra("product_price", 0.0)

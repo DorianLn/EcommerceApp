@@ -37,7 +37,7 @@ class CartActivity : AppCompatActivity() {
         cartListView.adapter = adapter
 
 
-        // Affichage du prix total
+
         val totalPrice = CartManager.getTotalPrice()
         Toast.makeText(this, "Total : ${String.format("%.2f", totalPrice)} €", Toast.LENGTH_LONG).show()
 
@@ -70,18 +70,16 @@ class CartActivity : AppCompatActivity() {
                 .setTitle("Confirmation de paiement")
                 .setMessage("Confirmer le paiement de ${String.format("%.2f", CartManager.getTotalPrice())} € ?")
                 .setPositiveButton("Confirmer") { _, _ ->
-                    // 1. Vider le panier
                     CartManager.clearCart()
 
-                    // 2. Mettre à jour l'adapter
+
                     cartItemsList.clear()
                     cartItemsList.addAll(CartManager.getCart())
                     adapter.notifyDataSetChanged()
 
-                    // 3. Mettre à jour le total
+
                     totalTextView.text = "Total = 0.00 €"
 
-                    // 4. Message de succès
                     Toast.makeText(this, "Paiement effectué avec succès", Toast.LENGTH_LONG).show()
                 }
                 .setNegativeButton("Annuler", null)
@@ -100,12 +98,12 @@ class CartActivity : AppCompatActivity() {
             .show()
     }
     private fun simulatePayment() {
-        // Simulation : on affiche un message, on vide le panier
+
         Toast.makeText(this, "Paiement effectué avec succès 🎉", Toast.LENGTH_LONG).show()
 
         CartManager.clearCart()
 
-        // Rafraîchissement UI
+        // Rafraîchissement de l'Ui
         val cartListView = findViewById<ListView>(R.id.cartListView)
         val totalTextView = findViewById<TextView>(R.id.cartTotalPrice)
 
